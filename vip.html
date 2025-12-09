@@ -1,239 +1,1309 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>17商城</title>
-<link type="text/css" href="css/css.css" rel="stylesheet" />
-<script type="text/javascript" src="js/vip所有商品分类下拉与隐藏.js"></script>
-<script type="text/javascript" src="js/index二级菜单栏.js"></script>
-<script type="text/javascript" src="js/vip保存信息提交到信息栏.js"></script>
-<script type="text/javascript" src="js/vip选择地区.js"></script>
-<script type="text/javascript" src="js/vip判断输入信息正误.js"></script>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liuliu的商城 - 个人中心</title>
+    <style>
+        /* 通用样式（复用首页基础样式） */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 头部样式（复用首页） */
+        .header {
+            background-color: #fff;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main-nav ul {
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-left: 25px;
+        }
+
+        .main-nav a {
+            color: #555;
+            font-weight: 500;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: #007bff;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-actions input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 180px;
+        }
+
+        .header-actions .cart-icon,
+        .header-actions .user-actions {
+            color: #555;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .header-actions .cart-icon:hover,
+        .header-actions .user-actions:hover {
+            color: #007bff;
+        }
+
+        /* 个人中心专属样式 */
+        .user-center {
+            padding: 30px 0;
+        }
+
+        .user-center .container {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .user-sidebar {
+            width: 220px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .user-avatar {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .user-level {
+            font-size: 12px;
+            color: #ff9900;
+            background-color: #fff8e1;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+
+        .sidebar-menu li {
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu li.active {
+            border-left-color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .sidebar-menu a:hover {
+            color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar-menu .icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        /* 主内容区 */
+        .user-content {
+            flex-grow: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 25px;
+        }
+
+        .content-title {
+            font-size: 22px;
+            color: #333;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 地址管理样式 */
+        .address-manager {
+            margin-top: 10px;
+        }
+
+        .addr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .addr-title {
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .add-addr-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .add-addr-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .addr-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .addr-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 15px;
+            position: relative;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .addr-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .addr-default {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 12px;
+            color: #fff;
+            background-color: #e63946;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .addr-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .addr-phone {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .addr-detail {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .addr-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-addr-btn {
+            color: #007bff;
+            border: 1px solid #007bff;
+            background-color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .edit-addr-btn:hover {
+            background-color: #e6f7ff;
+        }
+
+        .del-addr-btn {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            background-color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .del-addr-btn:hover {
+            background-color: #fff5f5;
+        }
+
+        /* 地址表单样式 */
+        .addr-form-wrap {
+            display: none;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .addr-form-wrap.show {
+            display: block;
+        }
+
+        .form-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label {
+            width: 100px;
+            text-align: right;
+            padding-right: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-control {
+            flex-grow: 1;
+            max-width: 400px;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+        .form-select {
+            flex-grow: 1;
+            max-width: 120px;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .form-tips {
+            color: #999;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .form-actions {
+            margin-left: 110px;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-addr-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .save-addr-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .cancel-addr-btn {
+            background-color: #fff;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .cancel-addr-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .required {
+            color: #dc3545;
+            margin-right: 2px;
+        }
+
+        /* 底部样式（复用首页） */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer p {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* 购物车侧边栏样式（复用首页） */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease-in-out;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .cart-overlay.open {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .close-cart-btn {
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.2s ease;
+        }
+
+        .close-cart-btn:hover {
+            color: #333;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: #888;
+            margin-top: 50px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .cart-item-details .price {
+            font-size: 14px;
+            color: #e63946;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cart-item-quantity button {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .cart-item-quantity button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .cart-item-quantity span {
+            padding: 0 8px;
+            font-size: 15px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .remove-item-btn:hover {
+            color: #c82333;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cart-total span:first-child {
+            color: #555;
+            margin-right: 10px;
+        }
+
+        .cart-total #cartTotalPrice {
+            color: #e63946;
+        }
+
+        .checkout-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .user-center .container {
+                flex-direction: column;
+            }
+
+            .user-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .addr-list {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-label {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+
+            .form-control, .form-select {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .form-select {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .form-actions {
+                margin-left: 0;
+            }
+
+            .header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .main-nav li {
+                margin: 5px 0;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 15px;
+            }
+
+            .header-actions input[type="text"] {
+                flex-grow: 1;
+                margin-right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-content {
+                padding: 15px;
+            }
+
+            .addr-card {
+                padding: 10px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .save-addr-btn, .cancel-addr-btn {
+                width: 100%;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .header-actions input[type="text"] {
+                width: calc(100% - 24px);
+                margin-right: 0;
+            }
+
+            .header-actions .cart-icon,
+            .header-actions .user-actions {
+                width: 100%;
+                text-align: center;
+                padding: 8px 0;
+                background-color: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
 <body>
- <div class="mianCont">
-  <div class="top">
-   <span>您好！欢迎来到17商城 请&nbsp;<a href="登录.html">[登录]</a>&nbsp;<a href="注册.html">[注册]</a></span>
-   <span class="topRight">
-    <a href="vip.html">我的17</a>&nbsp;| 
-    <a href="order.html">我的订单</a>&nbsp;| 
-    <a href="login.html">会员中心</a>&nbsp;|
-    <a href="contact.html">联系我们</a>
-   </span>
-  </div><!--top/-->
-  <div class="lsg">
-   <h1 class="logo"><a href="index.html"><img src="images/logo.png" width="217" height="90" /></a></h1>
-   <form action="#" method="get" class="subBox">
-    <div class="subBoxDiv">
-     <input type="text" class="subLeft" />
-     <input type="image" src="images/subimg.png" width="63" height="34" class="sub" />
-     <div class="hotWord">
-      热门搜索：
-      <a href="proinfo.html">冷饮杯</a>&nbsp;
-      <a href="proinfo.html">热饮杯</a> &nbsp;
-      <a href="proinfo.html">纸杯</a>&nbsp;
-      <a href="proinfo.html">纸巾</a>  &nbsp;
-      <a href="proinfo.html">纸巾</a> &nbsp;
-      <a href="proinfo.html">纸杯</a>&nbsp;
-     </div><!--hotWord/-->
-    </div><!--subBoxDiv/-->
-   </form><!--subBox/-->
-   <div class="gouwuche">
-    <div class="gouCar">
-     <img src="images/gouimg.png" width="19" height="20" style="position:relative;top:6px;" />&nbsp;|&nbsp;
-     <strong class="red">0</strong>&nbsp;件&nbsp;|
-     <strong class="red">￥ 0.00</strong> 
-     <a href="order.html">去结算</a> <img src="images/youjian.jpg" width="5" height="8" />    
-    </div><!--gouCar/-->
-    <div class="myChunlv">
-     <a href="vip.html"><img src="images/mychunlv.jpg" width="112" height="34" /></a>
-    </div><!--myChunlv/-->
-   </div><!--gouwuche/-->
-  </div><!--lsg/-->
-  <div class="pnt">
-   <div class="pntLeft">
-    <h2 class="Title">所有商品分类
-     <ul class="InPorNav">
-     <li><a href="product.html">纸杯系列</a>
-      <div class="chilInPorNav">
-       <a href="#">单层热饮杯</a>
-       <a href="#">双层中空杯</a>
-       <a href="#">瓦楞隔热杯</a>
-       <a href="#">双淋膜冷饮杯</a>
-       <a href="#">爆米花桶</a>
-       <a href="#">纸碗</a>
-       <a href="#">冰淇淋纸杯</a>
-       <a href="#">PS杯盖</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">PET系列</a>
-      <div class="chilInPorNav">
-       <a href="#">PET透明杯</a>
-       <a href="#">PET透明盖</a>
-       <a href="#">PET透明沙拉盒</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">饮品杯配套系列</a>
-      <div class="chilInPorNav">
-       <a href="#">杯袖</a>
-       <a href="#">环保纸浆杯托</a>
-       <a href="#">纸杯打包袋</a>
-       <a href="#">吸管</a>
-       <a href="#">搅拌棒</a>
-       <a href="#">杯盖</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸浆环保餐具系列</a>
-      <div class="chilInPorNav">
-       <a href="#">纸碟</a>
-       <a href="#">纸碗</a>
-       <a href="#">纸浆带盖汤碗</a>
-       <a href="#">连体餐盒</a>
-       <a href="#">分体餐盒</a>
-       <a href="#">纸浆沙拉盒</a>
-       <a href="#">纸托盘</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸餐盒系列</a>
-      <div class="chilInPorNav">
-       <a href="#">圆底纸餐盒</a>
-       <a href="#">方底纸餐盒</a>
-       <a href="#">三明治纸盒</a>
-       <a href="#">蛋糕盒</a>
-       <a href="#">其他纸餐盒</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">刀叉勺餐具</a>
-      <div class="chilInPorNav">
-       <a href="#">PS刀叉勺系列</a>
-       <a href="#">PLA刀叉勺系列</a>
-       <a href="#">淀粉刀叉勺系列</a>
-       <a href="#">搅拌棒/吸管</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">生活用纸</a>
-      <div class="chilInPorNav">
-       <a href="#">餐巾纸</a>
-       <a href="#">抽纸</a>
-       <a href="#">卫生纸</a>
-       <a href="#">擦手纸</a>
-       <a href="#">其他纸类</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸袋/环保打包袋</a>
-      <div class="chilInPorNav">
-       <a href="#">纸袋</a>
-       <a href="#">环保淀粉塑料袋</a>
-       <a href="#">PLA塑料袋</a>
-       <a href="#">食品袋</a>
-      </div><!--chilLeftNav/-->
-     </li>
-    </ul><!--InPorNav/-->
-    </h2>
-   </div><!--pntLeft/-->
-   <div class="pntRight">
-    <ul class="nav">
-     <li><a href="index.html">商城首页</a></li>
-     <li><a href="product.html">促销中心</a></li>
-     <li><a href="login.html">会员中心</a></li>
-     <li><a href="help.html">帮助中心</a></li>
-     <div class="clears"></div>
-     <div class="phone">TEL：021-12345678</div>
-    </ul><!--nav/-->
-   </div><!--pntRight/-->
-   <div class="clears"></div>
-  </div><!--pnt/-->
-  <div class="positions">
-   当前位置：<a href="index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
-    &gt; <a href="#" class="posCur">我的订单</a>
-  </div><!--positions/-->
-  <div class="cont">
-   <div class="contLeft" id="contLeft">
-    <h3 class="leftTitle">会员中心</h3>
-    <dl class="helpNav vipNav">
-     <dt>我的主页</dt>
-      <dd>
-       <a href="vip.html" class="vipCur">个人中心</a>
-       <a href="vipOrder.html">我的订单</a>
-      </dd>
-     <dt>账户设置</dt>
-      <dd>
-       <a href="vipMy.html">个人信息</a>
-       <a href="vipPwd.html">密码修改</a>
-       <a href="vipAdress.html">收货地址</a>
-      </dd>
-      <dt>客户服务</dt>
-       <dd>
-        <a href="vipExit.html">网站使用条款</a>
-        <a href="vipTuihuo.html">网站免责声明</a>
-        <a href="message.html">在线留言</a>
-       </dd>
-      
-      
-    </dl><!--helpNav/-->
-   </div><!--contLeft/-->
-   <div class="contRight">
-    <h1 class="vipName"><span>用户名：</span>青青草原沸羊羊  <strong class="vipUp">[点击修改/补充个人信息]</strong></h1>
-    <table class="vipMy">
-     <tr>
-      <th>用户名</th>
-      <th>邮编</th>
-      <th>真实姓名</th>
-      <th>联系方式</th>
-      <th>证件号码</th>
-      <th>地址</th>
-     </tr>
-     <tr>
-      <td>沸羊羊本羊</td>
-      <td>55555555</td>
-      <td>沸羊羊</td>
-      <td>13322256586</td>
-      <td>3124199901235468</td>
-      <td>普洱学院</td>
-     </tr>
-    </table><!--vipMy/-->
-    <div class="address">
-    <div class="addList">
-     <label><span class="red">* </span>用户名:</label>
-     <input type="text" />
-    </div><!--addList-->
-    <div class="addList">
-     <label><span class="red">* </span>详细地址:</label>
-     <input type="text" />
-    </div><!--addList-->
-    <div class="addList">
-     <label><span class="red">* </span>邮政编码:</label>
-     <input type="text" />
-    </div><!--addList-->
-    <div class="addList">
-     <label><span class="red">* </span>证件号码:</label>
-     <input type="text" />
-    </div><!--addList-->
-    <div class="addList">
-     <label><span class="red">* </span>手机号码:</label>
-     <input type="text" /> 或者固定电话 <input type="text" />
-    </div><!--addList--> 
-    <div class="addList">
-     <label><span class="red">* </span>选择地区:</label>
-     <select>
-      <option>请选择省</option>
-     </select>
-     <select>
-      <option>请选择市</option>
-     </select>
-     <select>
-      <option>请选择地区</option>
-     </select>
-    </div><!--addList-->
-    <div class="addList2">
-     <input type="image" src="images/baocun.png" width="79" height="30" />
-    </div><!--addList2/-->
-   </div><!--address/-->
-   </div><!--contRight/-->
-   <div class="clears"></div>
-  </div><!--cont/-->
- </div><!--mianCont/-->
- <a href="#" class="backTop">&nbsp;</a>
+    <!-- 头部（复用首页） -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">liuliu的商城</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#">所有商品</a></li>
+                    <li><a href="#">个人中心</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <input type="text" placeholder="搜索商品...">
+                <a href="javascript:;" class="cart-icon" id="openCartBtn">🛒 购物车 (<span id="cartItemCount">0</span>)</a>
+                <a href="注册.html" class="user-actions">登录/注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 个人中心主体 -->
+    <section class="user-center">
+        <div class="container">
+            <!-- 侧边导航 -->
+            <aside class="user-sidebar">
+                <div class="user-avatar">
+                    <img src="https://picsum.photos/id/64/80/80" alt="用户头像" class="avatar-img">
+                    <div class="user-name">青青草原沸羊羊</div>
+                    <div class="user-level">普通会员</div>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="#">
+                            <span class="icon">👤</span> 个人信息
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">📦</span> 我的订单
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">📍</span> 地址管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">🎁</span> 我的收藏
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">🔒</span> 账户安全
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- 主内容区 -->
+            <main class="user-content">
+                <h2 class="content-title">地址管理</h2>
+                
+                <!-- 地址管理头部 -->
+                <div class="address-manager">
+                    <div class="addr-header">
+                        <h3 class="addr-title">我的收货地址</h3>
+                        <button class="add-addr-btn" id="addAddrBtn">+ 新增地址</button>
+                    </div>
+
+                    <!-- 地址表单（新增/编辑） -->
+                    <div class="addr-form-wrap" id="addrFormWrap">
+                        <input type="hidden" id="addrId" value="">
+                        <div class="form-row">
+                            <label class="form-label"><span class="required">*</span> 收货人：</label>
+                            <input type="text" class="form-control" id="receiverName" placeholder="请输入收货人姓名">
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label"><span class="required">*</span> 手机号码：</label>
+                            <input type="text" class="form-control" id="receiverPhone" placeholder="请输入手机号码">
+                            <span class="form-tips">请填写11位有效手机号</span>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label"><span class="required">*</span> 所在地区：</label>
+                            <select class="form-select" id="provinceSelect">
+                                <option value="">请选择省份</option>
+                            </select>
+                            <select class="form-select" id="citySelect">
+                                <option value="">请选择城市</option>
+                            </select>
+                            <select class="form-select" id="areaSelect">
+                                <option value="">请选择区县</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label"><span class="required">*</span> 详细地址：</label>
+                            <input type="text" class="form-control" id="detailAddress" placeholder="如：街道、小区、门牌号等">
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">邮政编码：</label>
+                            <input type="text" class="form-control" id="zipCode" placeholder="可选填">
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">默认地址：</label>
+                            <input type="checkbox" id="isDefaultAddr">
+                            <span class="form-tips">设为默认收货地址</span>
+                        </div>
+                        <div class="form-actions">
+                            <button class="save-addr-btn" id="saveAddrBtn">保存地址</button>
+                            <button class="cancel-addr-btn" id="cancelAddrBtn">取消</button>
+                        </div>
+                    </div>
+
+                    <!-- 地址列表 -->
+                    <div class="addr-list" id="addrList">
+                        <!-- 示例地址卡片 -->
+                        <div class="addr-card" data-id="1">
+                            <div class="addr-default">默认</div>
+                            <div class="addr-name">沸羊羊</div>
+                            <div class="addr-phone">13322256586</div>
+                            <div class="addr-detail">云南省 普洱市 思茅区 普洱学院 学生宿舍1栋201室</div>
+                            <div class="addr-actions">
+                                <button class="edit-addr-btn">编辑</button>
+                                <button class="del-addr-btn">删除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- 底部（复用首页） -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 liuliu的商城. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">服务条款</a>
+                <a href="#">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 购物车侧边栏（复用首页） -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>购物车</h2>
+            <button class="close-cart-btn" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart-message">购物车是空的。</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>总计:</span>
+                <span id="cartTotalPrice">¥ 0.00</span>
+            </div>
+            <button class="checkout-btn">去结算</button>
+        </div>
+    </div>
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ===================== 省市县三级联动数据（简化版） =====================
+            const regionData = {
+                "云南省": {
+                    "普洱市": ["思茅区", "宁洱哈尼族彝族自治县", "墨江哈尼族自治县", "景东彝族自治县"],
+                    "昆明市": ["五华区", "盘龙区", "官渡区", "西山区"]
+                },
+                "四川省": {
+                    "成都市": ["锦江区", "青羊区", "金牛区", "武侯区"],
+                    "绵阳市": ["涪城区", "游仙区", "安州区"]
+                },
+                "广东省": {
+                    "广州市": ["荔湾区", "越秀区", "海珠区", "天河区"],
+                    "深圳市": ["罗湖区", "福田区", "南山区", "宝安区"]
+                }
+            };
+
+            // 初始化省份下拉框
+            const provinceSelect = document.getElementById('provinceSelect');
+            const citySelect = document.getElementById('citySelect');
+            const areaSelect = document.getElementById('areaSelect');
+            
+            // 填充省份
+            for (const province in regionData) {
+                const option = document.createElement('option');
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            }
+
+            // 省份变化联动城市
+            provinceSelect.addEventListener('change', () => {
+                // 清空城市和区县
+                citySelect.innerHTML = '<option value="">请选择城市</option>';
+                areaSelect.innerHTML = '<option value="">请选择区县</option>';
+                
+                const selectedProvince = provinceSelect.value;
+                if (!selectedProvince) return;
+
+                // 填充城市
+                const cities = regionData[selectedProvince];
+                for (const city in cities) {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                }
+            });
+
+            // 城市变化联动区县
+            citySelect.addEventListener('change', () => {
+                // 清空区县
+                areaSelect.innerHTML = '<option value="">请选择区县</option>';
+                
+                const selectedProvince = provinceSelect.value;
+                const selectedCity = citySelect.value;
+                if (!selectedProvince || !selectedCity) return;
+
+                // 填充区县
+                const areas = regionData[selectedProvince][selectedCity];
+                areas.forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area;
+                    option.textContent = area;
+                    areaSelect.appendChild(option);
+                });
+            });
+
+            // ===================== 地址管理逻辑 =====================
+            const addAddrBtn = document.getElementById('addAddrBtn');
+            const addrFormWrap = document.getElementById('addrFormWrap');
+            const saveAddrBtn = document.getElementById('saveAddrBtn');
+            const cancelAddrBtn = document.getElementById('cancelAddrBtn');
+            const addrList = document.getElementById('addrList');
+            const addrIdInput = document.getElementById('addrId');
+            const receiverNameInput = document.getElementById('receiverName');
+            const receiverPhoneInput = document.getElementById('receiverPhone');
+            const detailAddressInput = document.getElementById('detailAddress');
+            const zipCodeInput = document.getElementById('zipCode');
+            const isDefaultAddrInput = document.getElementById('isDefaultAddr');
+
+            // 存储地址数据（模拟本地存储）
+            let addressList = [
+                {
+                    id: 1,
+                    name: '沸羊羊',
+                    phone: '13322256586',
+                    province: '云南省',
+                    city: '普洱市',
+                    area: '思茅区',
+                    detail: '普洱学院 学生宿舍1栋201室',
+                    zipCode: '665000',
+                    isDefault: true
+                }
+            ];
+
+            // 渲染地址列表
+            function renderAddressList() {
+                addrList.innerHTML = '';
+                if (addressList.length === 0) {
+                    addrList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #999;">暂无收货地址，点击"新增地址"添加</div>';
+                    return;
+                }
+
+                addressList.forEach(addr => {
+                    const addrCard = document.createElement('div');
+                    addrCard.className = 'addr-card';
+                    addrCard.dataset.id = addr.id;
+                    addrCard.innerHTML = `
+                        ${addr.isDefault ? '<div class="addr-default">默认</div>' : ''}
+                        <div class="addr-name">${addr.name}</div>
+                        <div class="addr-phone">${addr.phone}</div>
+                        <div class="addr-detail">${addr.province} ${addr.city} ${addr.area} ${addr.detail}</div>
+                        <div class="addr-actions">
+                            <button class="edit-addr-btn">编辑</button>
+                            <button class="del-addr-btn">删除</button>
+                        </div>
+                    `;
+                    addrList.appendChild(addrCard);
+
+                    // 编辑地址事件
+                    addrCard.querySelector('.edit-addr-btn').addEventListener('click', () => {
+                        editAddress(addr);
+                    });
+
+                    // 删除地址事件
+                    addrCard.querySelector('.del-addr-btn').addEventListener('click', () => {
+                        deleteAddress(addr.id);
+                    });
+                });
+            }
+
+            // 新增地址按钮点击
+            addAddrBtn.addEventListener('click', () => {
+                // 重置表单
+                resetAddrForm();
+                // 显示表单
+                addrFormWrap.classList.add('show');
+                // 滚动到表单
+                addrFormWrap.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // 取消按钮点击
+            cancelAddrBtn.addEventListener('click', () => {
+                addrFormWrap.classList.remove('show');
+                resetAddrForm();
+            });
+
+            // 保存地址
+            saveAddrBtn.addEventListener('click', () => {
+                // 表单验证
+                const name = receiverNameInput.value.trim();
+                const phone = receiverPhoneInput.value.trim();
+                const province = provinceSelect.value;
+                const city = citySelect.value;
+                const area = areaSelect.value;
+                const detail = detailAddressInput.value.trim();
+
+                if (!name) {
+                    alert('请输入收货人姓名！');
+                    return;
+                }
+
+                const phoneReg = /^1[3-9]\d{9}$/;
+                if (!phoneReg.test(phone)) {
+                    alert('请输入有效的11位手机号码！');
+                    return;
+                }
+
+                if (!province || !city || !area) {
+                    alert('请选择完整的省市区！');
+                    return;
+                }
+
+                if (!detail) {
+                    alert('请输入详细地址！');
+                    return;
+                }
+
+                // 组装地址数据
+                const addrData = {
+                    name,
+                    phone,
+                    province,
+                    city,
+                    area,
+                    detail,
+                    zipCode: zipCodeInput.value.trim() || '',
+                    isDefault: isDefaultAddrInput.checked
+                };
+
+                const addrId = addrIdInput.value;
+                if (addrId) {
+                    // 编辑现有地址
+                    const index = addressList.findIndex(item => item.id == addrId);
+                    if (index !== -1) {
+                        addressList[index] = { ...addressList[index], ...addrData };
+                    }
+                } else {
+                    // 新增地址
+                    const newId = addressList.length > 0 ? Math.max(...addressList.map(item => item.id)) + 1 : 1;
+                    addressList.push({
+                        id: newId,
+                        ...addrData
+                    });
+                }
+
+                // 如果设置为默认，取消其他地址的默认状态
+                if (addrData.isDefault) {
+                    addressList.forEach(item => {
+                        if (item.id != (addrId || 0)) {
+                            item.isDefault = false;
+                        }
+                    });
+                }
+
+                // 重新渲染列表
+                renderAddressList();
+                // 隐藏表单
+                addrFormWrap.classList.remove('show');
+                // 重置表单
+                resetAddrForm();
+                // 提示
+                alert(addrId ? '地址修改成功！' : '地址新增成功！');
+            });
+
+            // 编辑地址
+            function editAddress(addr) {
+                // 填充表单
+                addrIdInput.value = addr.id;
+                receiverNameInput.value = addr.name;
+                receiverPhoneInput.value = addr.phone;
+                zipCodeInput.value = addr.zipCode;
+                detailAddressInput.value = addr.detail;
+                isDefaultAddrInput.checked = addr.isDefault;
+
+                // 选择省市区
+                provinceSelect.value = addr.province;
+                // 触发省份变化，加载城市
+                provinceSelect.dispatchEvent(new Event('change'));
+                // 延迟选择城市（等待城市加载完成）
+                setTimeout(() => {
+                    citySelect.value = addr.city;
+                    // 触发城市变化，加载区县
+                    citySelect.dispatchEvent(new Event('change'));
+                    // 延迟选择区县
+                    setTimeout(() => {
+                        areaSelect.value = addr.area;
+                    }, 50);
+                }, 50);
+
+                // 显示表单
+                addrFormWrap.classList.add('show');
+                addrFormWrap.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // 删除地址
+            function deleteAddress(addrId) {
+                if (!confirm('确定要删除该地址吗？')) return;
+                addressList = addressList.filter(item => item.id !== addrId);
+                renderAddressList();
+            }
+
+            // 重置地址表单
+            function resetAddrForm() {
+                addrIdInput.value = '';
+                receiverNameInput.value = '';
+                receiverPhoneInput.value = '';
+                provinceSelect.value = '';
+                citySelect.innerHTML = '<option value="">请选择城市</option>';
+                areaSelect.innerHTML = '<option value="">请选择区县</option>';
+                detailAddressInput.value = '';
+                zipCodeInput.value = '';
+                isDefaultAddrInput.checked = false;
+            }
+
+            // ===================== 复用首页购物车逻辑 =====================
+            const openCartBtn = document.getElementById('openCartBtn');
+            const closeCartBtn = document.getElementById('closeCartBtn');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalPriceSpan = document.getElementById('cartTotalPrice');
+            const cartItemCountSpan = document.getElementById('cartItemCount');
+
+            let cart = [];
+
+            // 加载购物车
+            function loadCartFromLocalStorage() {
+                const storedCart = localStorage.getItem('shoppingCart');
+                if (storedCart) {
+                    cart = JSON.parse(storedCart);
+                }
+            }
+
+            // 保存购物车
+            function saveCartToLocalStorage() {
+                localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            }
+
+            // 渲染购物车
+            function renderCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+                let itemCount = 0;
+
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="empty-cart-message">购物车是空的。</p>';
+                } else {
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        itemCount += item.quantity;
+
+                        const cartItemDiv = document.createElement('div');
+                        cartItemDiv.classList.add('cart-item');
+                        cartItemDiv.innerHTML = `
+                            <img src="${item.image || 'https://picsum.photos/80/80'}" alt="${item.name}" class="cart-item-img">
+                            <div class="cart-item-details">
+                                <h4>${item.name}</h4>
+                                <p class="price">¥ ${item.price.toFixed(2)}</p>
+                                <div class="cart-item-quantity">
+                                    <button class="decrease-quantity" data-id="${item.id}">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="increase-quantity" data-id="${item.id}">+</button>
+                                </div>
+                            </div>
+                            <button class="remove-item-btn" data-id="${item.id}">&times;</button>
+                        `;
+                        cartItemsContainer.appendChild(cartItemDiv);
+                    });
+                }
+
+                cartTotalPriceSpan.textContent = `¥ ${total.toFixed(2)}`;
+                cartItemCountSpan.textContent = itemCount;
+                saveCartToLocalStorage();
+            }
+
+            // 打开购物车
+            function openCartSidebar() {
+                cartSidebar.classList.add('open');
+                cartOverlay.classList.add('open');
+            }
+
+            // 关闭购物车
+            function closeCartSidebar() {
+                cartSidebar.classList.remove('open');
+                cartOverlay.classList.remove('open');
+            }
+
+            // 购物车事件绑定
+            openCartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openCartSidebar();
+            });
+
+            closeCartBtn.addEventListener('click', closeCartSidebar);
+            cartOverlay.addEventListener('click', closeCartSidebar);
+
+            // 购物车商品操作（事件委托）
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target;
+                const productId = target.dataset.id;
+                if (!productId) return;
+
+                if (target.classList.contains('decrease-quantity')) {
+                    const item = cart.find(item => item.id === productId);
+                    if (item) {
+                        item.quantity -= 1;
+                        if (item.quantity <= 0) {
+                            cart = cart.filter(item => item.id !== productId);
+                        }
+                        renderCart();
+                    }
+                } else if (target.classList.contains('increase-quantity')) {
+                    const item = cart.find(item => item.id === productId);
+                    if (item) {
+                        item.quantity += 1;
+                        renderCart();
+                    }
+                } else if (target.classList.contains('remove-item-btn')) {
+                    cart = cart.filter(item => item.id !== productId);
+                    renderCart();
+                }
+            });
+
+            // 初始化
+            renderAddressList(); // 渲染地址列表
+            loadCartFromLocalStorage(); // 加载购物车
+            renderCart(); // 渲染购物车
+        });
+    </script>
 </body>
 </html>
