@@ -1,487 +1,1010 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+a<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>17商城</title>
-<link type="text/css" href="css/css.css" rel="stylesheet" />
-<script type="text/javascript" src="js/index二级菜单栏.js" ></script>
-<script type="text/javascript" src="js/index轮播图.js"></script>
-<script type="text/javascript" src="js/index商品分类栏.js"></script>
-<style>
-/* 新增样式用于美化搜索按钮和LOGO文字 */
-.logo-text {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-    line-height: 90px;
-}
-/* 搜索区域分栏样式 */
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 2px; /* 输入框和按钮之间保留小间距，避免重叠 */
-    width: 100%; /* 占满父容器宽度 */
-}
-.subLeft {
-    height: 34px; /* 与按钮高度一致，避免错位 */
-    padding: 0 10px;
-    border: 1px solid #ddd;
-    flex: 1; /* 让输入框自适应宽度 */
-    min-width: 200px; /* 设置最小宽度 */
-    box-sizing: border-box;
-    outline: none; /* 移除聚焦外边框 */
-    font-size: 14px;
-}
-/* 输入框聚焦样式 */
-.subLeft:focus {
-    border-color: #999;
-}
-.search-btn {
-    width: 80px;
-    height: 34px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    transition: background-color 0.2s; /* 过渡效果 */
-}
-.search-btn:hover {
-    background-color: #eee;
-    border-color: #ccc;
-}
-/* 调整搜索盒子布局 */
-.subBoxDiv {
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* 搜索栏和热门搜索之间的间距 */
-    width: 100%;
-    max-width: 400px; /* 限制搜索框最大宽度 */
-}
-/* 调整lsg布局，避免内容挤压 */
-.lsg {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-}
-.logo {
-    margin: 0 20px 0 0;
-}
-.subBox {
-    flex: 1;
-    margin: 0 20px;
-}
-.gouwuche {
-    margin: 0 0 0 20px;
-}
-</style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liuliu的商城</title>
+    <!-- CSS 样式保持不变 -->
+    <style>
+        /* 通用样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 头部样式 */
+        .header {
+            background-color: #fff;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main-nav ul {
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-left: 25px;
+        }
+
+        .main-nav a {
+            color: #555;
+            font-weight: 500;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: #007bff;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-actions input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 180px;
+        }
+
+        .header-actions .cart-icon,
+        .header-actions .user-actions {
+            color: #555;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .header-actions .cart-icon:hover,
+        .header-actions .user-actions:hover {
+            color: #007bff;
+        }
+
+        /* 轮播图部分 */
+        .carousel-section {
+            margin-bottom: 30px;
+            background-color: #f0f0f0;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slides img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        /* 轮播图导航按钮 */
+        .carousel-prev,
+        .carousel-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 5px;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-prev:hover,
+        .carousel-next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-prev {
+            left: 10px;
+        }
+
+        .carousel-next {
+            right: 10px;
+        }
+
+        /* 轮播图导航点 */
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #007bff;
+            transform: scale(1.2);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            padding: 30px 0;
+        }
+
+        .main-content .container {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 8px 0;
+            color: #555;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #f0f0f0;
+            color: #007bff;
+            padding-left: 5px;
+        }
+
+        /* 商品列表 */
+        .product-listing {
+            flex-grow: 1;
+        }
+
+        .product-listing h1 {
+            margin-top: 0;
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .product-card .price {
+            font-size: 20px;
+            color: #e63946;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-card .add-to-cart {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-card .add-to-cart:hover {
+            background-color: #0056b3;
+        }
+
+        /* 底部样式 */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer p {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* 购物车侧边栏样式 */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px; /* 初始状态隐藏在右侧 */
+            width: 380px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease-in-out;
+        }
+
+        .cart-sidebar.open {
+            right: 0; /* 打开时显示 */
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none; /* 初始状态隐藏 */
+        }
+
+        .cart-overlay.open {
+            display: block; /* 打开时显示 */
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .close-cart-btn {
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.2s ease;
+        }
+
+        .close-cart-btn:hover {
+            color: #333;
+        }
+
+        .cart-items {
+            flex-grow: 1; /* 占据剩余空间 */
+            padding: 20px;
+            overflow-y: auto; /* 内容过多时滚动 */
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: #888;
+            margin-top: 50px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .cart-item-details .price {
+            font-size: 14px;
+            color: #e63946;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cart-item-quantity button {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .cart-item-quantity button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .cart-item-quantity span {
+            padding: 0 8px;
+            font-size: 15px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .remove-item-btn:hover {
+            color: #c82333;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cart-total span:first-child {
+            color: #555;
+            margin-right: 10px;
+        }
+
+        .cart-total #cartTotalPrice {
+            color: #e63946;
+        }
+
+        .checkout-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .main-nav li {
+                margin: 5px 0;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 15px;
+            }
+
+            .header-actions input[type="text"] {
+                flex-grow: 1;
+                margin-right: 10px;
+            }
+
+            .main-content .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 30px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+
+            .carousel-slides img {
+                height: 250px;
+            }
+            .carousel-prev,
+            .carousel-next {
+                padding: 10px 7px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .header-actions input[type="text"] {
+                width: calc(100% - 24px);
+                margin-right: 0;
+            }
+            .header-actions .cart-icon,
+            .header-actions .user-actions {
+                width: 100%;
+                text-align: center;
+                padding: 8px 0;
+                background-color: #f0f0f0;
+                border-radius: 4px;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .carousel-slides img {
+                height: 180px;
+            }
+            .carousel-prev,
+            .carousel-next {
+                padding: 8px 5px;
+                font-size: 18px;
+            }
+            .carousel-dots {
+                bottom: 10px;
+                gap: 8px;
+            }
+            .dot {
+                height: 10px;
+                width: 10px;
+            }
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            .cart-sidebar.open {
+                right: 0;
+            }
+            .cart-item-img {
+                width: 60px;
+                height: 60px;
+            }
+            .cart-item-details h4 {
+                font-size: 14px;
+            }
+            .cart-item-details .price {
+                font-size: 13px;
+            }
+            .cart-item-quantity button {
+                width: 24px;
+                height: 24px;
+                font-size: 14px;
+            }
+            .cart-item-quantity span {
+                font-size: 13px;
+            }
+            .remove-item-btn {
+                font-size: 18px;
+            }
+            .cart-header h2 {
+                font-size: 20px;
+            }
+            .checkout-btn {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
 <body>
- <div class="mianCont">
-  <div class="top">
-   <span>您好！欢迎来到17商城 请&nbsp;<a href="登录.html">[登录]</a>&nbsp;<a href="注册.html">[注册]</a></span>
-   <span class="topRight">
-    <a href="vip.html">我的17</a>&nbsp;| 
-    <a href="order.html">我的订单</a>&nbsp;| 
-    <a href="login.html">会员中心</a>&nbsp;|
-    <a href="contact.html">联系我们</a>
-   </span>
-  </div><!--top/-->
-  <div class="lsg">
-   <!-- 替换LOGO图片为文字 -->
-   <h1 class="logo"><a href="index.html" class="logo-text">17商场</a></h1>
-   <form action="#" method="get" class="subBox">
-    <div class="subBoxDiv">
-     <!-- 搜索框和按钮分栏容器 -->
-     <div class="search-container">
-      <input type="text" class="subLeft" placeholder="请输入搜索关键词" />
-      
-     </div>
-     <div class="hotWord">
-      热门搜索：
-      <a href="proinfo.html">冷饮杯</a>&nbsp;
-      <a href="proinfo.html">热饮杯</a> &nbsp;
-      <a href="proinfo.html">纸杯</a>&nbsp;
-      <a href="proinfo.html">纸巾</a>  &nbsp;
-      <a href="proinfo.html">纸巾</a> &nbsp;
-      <a href="proinfo.html">纸杯</a>&nbsp;
-     </div><!--hotWord/-->
-    </div><!--subBoxDiv/-->
-   </form><!--subBox/-->
-   <div class="gouwuche">
-    <div class="gouCar">
-     <img src="https://picsum.photos/seed/cart-icon/19/20" width="19" height="20" style="position:relative;top:6px;" alt="购物车图标" />&nbsp;|&nbsp;
-     <strong class="red">0</strong>&nbsp;件&nbsp;|
-     <strong class="red">￥ 0.00</strong> 
-     <a href="order.html">去结算</a> <img src="https://picsum.photos/seed/arrow-icon/5/8" width="5" height="8" alt="箭头图标" />    
-    </div><!--gouCar/-->
-    <div class="myChunlv">
-     <!-- 个人中心图片替换为会员中心类图片 -->
-     <a href="vip.html"><h1>购物车</h1></a>
-    </div><!--myChunlv/-->
-   </div><!--gouwuche/-->
-  </div><!--lsg/-->
-  
-  <!--
-  	二级菜单栏
-  -->
-  <div class="pnt">
-   <div class="pntLeft">
-    <h2 class="Title">所有商品分类</h2>
-    <ul class="InPorNav">
-     <li><a href="product.html">纸杯系列</a>
-      <div class="chilInPorNav">
-       <a href="#">单层热饮杯</a>
-       <a href="#">双层中空杯</a>
-       <a href="#">瓦楞隔热杯</a>
-       <a href="#">双淋膜冷饮杯</a>
-       <a href="#">爆米花桶</a>
-       <a href="#">纸碗</a>
-       <a href="#">冰淇淋纸杯</a>
-       <a href="#">PS杯盖</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">PET系列</a>
-      <div class="chilInPorNav">
-       <a href="#">PET透明杯</a>
-       <a href="#">PET透明盖</a>
-       <a href="#">PET透明沙拉盒</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">饮品杯配套系列</a>
-      <div class="chilInPorNav">
-       <a href="#">杯袖</a>
-       <a href="#">环保纸浆杯托</a>
-       <a href="#">纸杯打包袋</a>
-       <a href="#">吸管</a>
-       <a href="#">搅拌棒</a>
-       <a href="#">杯盖</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸浆环保餐具系列</a>
-      <div class="chilInPorNav">
-       <a href="#">纸碟</a>
-       <a href="#">纸碗</a>
-       <a href="#">纸浆带盖汤碗</a>
-       <a href="#">连体餐盒</a>
-       <a href="#">分体餐盒</a>
-       <a href="#">纸浆沙拉盒</a>
-       <a href="#">纸托盘</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸餐盒系列</a>
-      <div class="chilInPorNav">
-       <a href="#">圆底纸餐盒</a>
-       <a href="#">方底纸餐盒</a>
-       <a href="#">三明治纸盒</a>
-       <a href="#">蛋糕盒</a>
-       <a href="#">其他纸餐盒</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">刀叉勺餐具</a>
-      <div class="chilInPorNav">
-       <a href="#">PS刀叉勺系列</a>
-       <a href="#">PLA刀叉勺系列</a>
-       <a href="#">淀粉刀叉勺系列</a>
-       <a href="#">搅拌棒/吸管</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">生活用纸</a>
-      <div class="chilInPorNav">
-       <a href="#">餐巾纸</a>
-       <a href="#">抽纸</a>
-       <a href="#">卫生纸</a>
-       <a href="#">擦手纸</a>
-       <a href="#">其他纸类</a>
-      </div><!--chilLeftNav/-->
-     </li>
-     <li><a href="product.html">纸袋/环保打包袋</a>
-      <div class="chilInPorNav">
-       <a href="#">纸袋</a>
-       <a href="#">环保淀粉塑料袋</a>
-       <a href="#">PLA塑料袋</a>
-       <a href="#">食品袋</a>
-      </div><!--chilLeftNav/-->
-     </li>
-    </ul><!--InPorNav/-->
-   </div><!--pntLeft/-->
-   <div class="pntRight">
-    <ul class="nav">
-     <li class="navCur"><a href="index.html">商城首页</a></li>
-     <li><a href="product.html">促销中心</a></li>
-     <li><a href="login.html">会员中心</a></li>
-     <li><a href="help.html">帮助中心</a></li>
-     <div class="clears"></div>
-     <div class="phone">TEL：021-12345678</div>
-    </ul><!--nav/-->
-  <div class="banner">
-     <div id="kinMaxShow">
-      <!-- 轮播图替换为餐饮包装类banner -->
-      <div>
-       <a href="#"><img src="https://picsum.photos/seed/banner1/756/360"  width="756"height="360" alt="纸杯促销banner" /></a>
-      </div> 		
-      <div>
-       <a href="#"><img src="https://picsum.photos/seed/banner2/756/360"  width="756"height="360" alt="环保餐具banner" /></a>
-      </div>
-      <div>
-       <a href="#"><img src="https://picsum.photos/seed/banner3/756/360" width="756" height="360" alt="一次性餐盒banner" /></a>
-      </div>
-      <div>
-       <a href="#"><img src="https://picsum.photos/seed/banner4/756/360"  width="756"height="360" alt="生活用纸banner" /></a>
-      </div>
-      <div>
-       <a href="#"><img src="https://picsum.photos/seed/banner5/756/360"  width="756"height="360" alt="打包袋banner" /></a>
-      </div>   
-     </div><!--kinMaxShow/-->
-    </div><!--banner/-->
-   </div><!--pntRight/-->
-   <div class="clears"></div>
-  </div><!--pnt/-->
-  <div class="floor" id="floor1">
-   <h3 class="floorTitle">
-   杯子系列
-   <a href="#" class="more">更多 &gt;</a>
-   </h3>
-   <div class="floorBox">
-    <div class="floorLeft">
-     <ul class="flList">
-      <li>单层纸杯</li>
-      <li>双层纸杯</li>
-      <li>瓦楞纸杯</li>
-      <li>PET透明杯</li>
-      <li>冰淇淋杯</li>
-      <li><a href="proinfo.html">更多&gt;&gt;</a></li>
-      <div class="clears"></div>
-     </ul><!--flList/-->
-     <!-- 分类图替换为杯子分类图 -->
-     <div class="flImg"><img src="https://picsum.photos/seed/cup-category/198/290" width="198" height="290" alt="杯子系列分类图" /></div>
-    </div><!--floorLeft/-->
-    <div class="floorRight">
-     <div class="frProList">
-      <!-- 商品图片替换为不同的纸杯/餐具商品图 -->
-      <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-       <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-       <dd class="cheng">￥19.80/袋</dd>
-      </dl>
-      <div class="clears"></div>
-     </div><!--frProList-->
-     <div class="frProList">
-      <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-       <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-       <dd class="cheng">￥19.80/袋</dd>
-      </dl>
-      <div class="clears"></div>
-     </div><!--frProList-->
-     <div class="frProList">
-      <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-       <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-       <dd class="cheng">￥19.80/袋</dd>
-      </dl>
-      <div class="clears"></div>
-     </div><!--frProList-->
-     <div class="frProList">
-      <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product3/132/129" width="132" height="129" alt="瓦楞隔热杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-       <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-       <dd class="cheng">￥19.80/袋</dd>
-      </dl>
-      <div class="clears"></div>
-     </div><!--frProList-->
-     <div class="frProList">
-      <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product5/132/129" width="132" height="129" alt="冰淇淋纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product4/132/129" width="132" height="129" alt="冷饮杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-      <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product1/132/129" width="132" height="129" alt="一次性纸杯" /></a></dt>
-      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-      <dd class="cheng">￥19.80/袋</dd>
-     </dl>
-     <dl>
-       <dt><a href="proinfo.html"><img src="https://picsum.photos/seed/product2/132/129" width="132" height="129" alt="双层中空杯" /></a></dt>
-       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>
-       <dd class="cheng">￥19.80/袋</dd>
-      </dl>
-      <div class="clears"></div>
-     </div><!--frProList-->
-    </div><!--floorRight/-->
-    <div class="clears"></div>
-   </div><!--floorBox/-->
-  </div><!--floor/-->
- </div><!--mianCont/-->
- <a href="#" class="backTop">&nbsp;</a>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="#">liuliu的商城</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">所有商品</a></li>
+                    <li><a href="vip.html">个人中心</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <input type="text" placeholder="搜索商品...">
+                <a href="vip.html" class="cart-icon" id="openCartBtn">🛒 购物车 (<span id="cartItemCount">0</span>)</a>
+                <a href="注册.html" class="user-actions">登录/注册</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <div class="carousel-slides">
+                <!-- 替换后的轮播图链接 -->
+                <img src="https://picsum.photos/id/26/1200/400" alt="新品上市 - 数码家电专场">
+                <img src="https://picsum.photos/id/65/1200/400" alt="限时折扣 - 服饰鞋包5折起">
+                <img src="https://picsum.photos/id/96/1200/400" alt="会员专享 - 家居好物满减">
+            </div>
+            <button class="carousel-prev">&#10094;</button>
+            <button class="carousel-next">&#10095;</button>
+            <div class="carousel-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <aside class="sidebar">
+                <h2>商品分类</h2>
+                <ul>
+                    <li><a href="#">电子产品</a></li>
+                    <li><a href="#">服装鞋帽</a></li>
+                    <li><a href="#">家居生活</a></li>
+                    <li><a href="#">图书音像</a></li>
+                    <li><a href="#">美妆个护</a></li>
+                </ul>
+            </aside>
+
+            <section class="product-listing">
+                <h1>热门商品</h1>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <!-- 替换后的商品图片1 - 电子产品 -->
+                        <img src="https://picsum.photos/id/96/200/200" alt="无线蓝牙耳机">
+                        <h3>无线蓝牙耳机</h3>
+                        <p class="price">¥ <span class="product-price">199.00</span></p>
+                        <button class="add-to-cart" data-product-id="p001" data-product-name="无线蓝牙耳机" data-product-price="199.00">加入购物车</button>
+                    </div>
+                    <div class="product-card">
+                        <!-- 替换后的商品图片2 - 服装 -->
+                        <img src="https://picsum.photos/id/21/200/200" alt="纯棉休闲T恤">
+                        <h3>纯棉休闲T恤</h3>
+                        <p class="price">¥ <span class="product-price">299.00</span></p>
+                        <button class="add-to-cart" data-product-id="p002" data-product-name="纯棉休闲T恤" data-product-price="299.00">加入购物车</button>
+                    </div>
+                    <div class="product-card">
+                        <!-- 替换后的商品图片3 - 家居用品 -->
+                        <img src="https://picsum.photos/id/42/200/200" alt="北欧风马克杯">
+                        <h3>北欧风马克杯</h3>
+                        <p class="price">¥ <span class="product-price">99.00</span></p>
+                        <button class="add-to-cart" data-product-id="p003" data-product-name="北欧风马克杯" data-product-price="99.00">加入购物车</button>
+                    </div>
+                    <div class="product-card">
+                        <!-- 替换后的商品图片4 - 美妆个护 -->
+                        <img src="https://picsum.photos/id/24/200/200" alt="保湿修护面霜">
+                        <h3>保湿修护面霜</h3>
+                        <p class="price">¥ <span class="product-price">499.00</span></p>
+                        <button class="add-to-cart" data-product-id="p004" data-product-name="保湿修护面霜" data-product-price="499.00">加入购物车</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 我的商城. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">服务条款</a>
+                <a href="#">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 购物车侧边栏 -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>购物车</h2>
+            <button class="close-cart-btn" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart-message">购物车是空的。</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>总计:</span>
+                <span id="cartTotalPrice">¥ 0.00</span>
+            </div>
+            <button class="checkout-btn">去结算</button>
+        </div>
+    </div>
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- JavaScript 脚本保持不变 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 轮播图 JavaScript 逻辑 ---
+            const carouselSlides = document.querySelector('.carousel-slides');
+            const slides = document.querySelectorAll('.carousel-slides img');
+            const prevBtn = document.querySelector('.carousel-prev');
+            const nextBtn = document.querySelector('.carousel-next');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            const dots = document.querySelectorAll('.carousel-dots .dot');
+
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+            let autoPlayInterval;
+
+            function updateCarousel() {
+                carouselSlides.style.transform = `translateX(${-currentIndex * 100}%)`;
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function showNextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }
+
+            function showPrevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            }
+
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(showNextSlide, 3000);
+            }
+
+            function stopAutoPlay() {
+                clearInterval(autoPlayInterval);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                showNextSlide();
+                startAutoPlay();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                showPrevSlide();
+                startAutoPlay();
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    stopAutoPlay();
+                    currentIndex = index;
+                    updateCarousel();
+                    startAutoPlay();
+                });
+            });
+
+            carouselSlides.parentElement.addEventListener('mouseenter', stopAutoPlay);
+            carouselSlides.parentElement.addEventListener('mouseleave', startAutoPlay);
+
+            updateCarousel();
+            startAutoPlay();
+
+            // --- 搜索功能 ---
+            const searchInput = document.querySelector('.header-actions input[type="text"]');
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        alert(`您搜索了: "${searchTerm}"`);
+                    } else {
+                        alert('请输入搜索关键词。');
+                    }
+                }
+            });
+
+            // --- 购物车 JavaScript 逻辑 ---
+            const openCartBtn = document.getElementById('openCartBtn');
+            const closeCartBtn = document.getElementById('closeCartBtn');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalPriceSpan = document.getElementById('cartTotalPrice');
+            const cartItemCountSpan = document.getElementById('cartItemCount');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+            let cart = []; // 购物车数据，存储商品对象 { id, name, price, quantity, image }
+
+            // 从 localStorage 加载购物车数据 (如果存在)
+            function loadCartFromLocalStorage() {
+                const storedCart = localStorage.getItem('shoppingCart');
+                if (storedCart) {
+                    cart = JSON.parse(storedCart);
+                }
+            }
+
+            // 保存购物车数据到 localStorage
+            function saveCartToLocalStorage() {
+                localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            }
+
+            // 渲染购物车内容
+            function renderCart() {
+                cartItemsContainer.innerHTML = ''; // 清空现有内容
+                let total = 0;
+                let itemCount = 0;
+
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="empty-cart-message">购物车是空的。</p>';
+                } else {
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        itemCount += item.quantity;
+
+                        const cartItemDiv = document.createElement('div');
+                        cartItemDiv.classList.add('cart-item');
+                        cartItemDiv.innerHTML = `
+                            <img src="${item.image || 'https://picsum.photos/80/80'}" alt="${item.name}" class="cart-item-img">
+                            <div class="cart-item-details">
+                                <h4>${item.name}</h4>
+                                <p class="price">¥ ${item.price.toFixed(2)}</p>
+                                <div class="cart-item-quantity">
+                                    <button class="decrease-quantity" data-id="${item.id}">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="increase-quantity" data-id="${item.id}">+</button>
+                                </div>
+                            </div>
+                            <button class="remove-item-btn" data-id="${item.id}">&times;</button>
+                        `;
+                        cartItemsContainer.appendChild(cartItemDiv);
+                    });
+                }
+
+                cartTotalPriceSpan.textContent = `¥ ${total.toFixed(2)}`;
+                cartItemCountSpan.textContent = itemCount;
+                saveCartToLocalStorage(); // 每次渲染后保存购物车状态
+            }
+
+            // 添加商品到购物车
+            function addToCart(productId, productName, productPrice) {
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    // 匹配商品对应的图片
+                    const productImages = {
+                        'p001': 'https://picsum.photos/id/96/80/80',
+                        'p002': 'https://picsum.photos/id/21/80/80',
+                        'p003': 'https://picsum.photos/id/42/80/80',
+                        'p004': 'https://picsum.photos/id/24/80/80'
+                    };
+                    cart.push({
+                        id: productId,
+                        name: productName,
+                        price: parseFloat(productPrice),
+                        quantity: 1,
+                        image: productImages[productId] || 'https://picsum.photos/80/80'
+                    });
+                }
+                renderCart();
+                openCartSidebar(); // 添加后自动打开购物车
+            }
+
+            // 从购物车移除商品
+            function removeFromCart(productId) {
+                cart = cart.filter(item => item.id !== productId);
+                renderCart();
+            }
+
+            // 更新商品数量
+            function updateQuantity(productId, change) {
+                const item = cart.find(item => item.id === productId);
+                if (item) {
+                    item.quantity += change;
+                    if (item.quantity <= 0) {
+                        removeFromCart(productId); // 数量为0或负数时移除
+                    }
+                }
+                renderCart();
+            }
+
+            // 打开购物车侧边栏
+            function openCartSidebar() {
+                cartSidebar.classList.add('open');
+                cartOverlay.classList.add('open');
+            }
+
+            // 关闭购物车侧边栏
+            function closeCartSidebar() {
+                cartSidebar.classList.remove('open');
+                cartOverlay.classList.remove('open');
+            }
+
+            // 事件监听器
+            openCartBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // 阻止默认跳转
+                openCartSidebar();
+            });
+
+            closeCartBtn.addEventListener('click', closeCartSidebar);
+            cartOverlay.addEventListener('click', closeCartSidebar); // 点击遮罩层关闭
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productId = event.target.dataset.productId;
+                    const productName = event.target.dataset.productName;
+                    const productPrice = event.target.dataset.productPrice;
+                    addToCart(productId, productName, productPrice);
+                });
+            });
+
+            // 购物车商品操作事件委托（解决动态生成元素的事件绑定问题）
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target;
+                const productId = target.dataset.id;
+                
+                // 减少数量
+                if (target.classList.contains('decrease-quantity')) {
+                    updateQuantity(productId, -1);
+                }
+                // 增加数量
+                else if (target.classList.contains('increase-quantity')) {
+                    updateQuantity(productId, 1);
+                }
+                // 删除商品
+                else if (target.classList.contains('remove-item-btn')) {
+                    removeFromCart(productId);
+                }
+            });
+
+            // 页面加载时加载购物车数据并渲染
+            loadCartFromLocalStorage();
+            renderCart();
+        });
+    </script>
 </body>
 </html>
