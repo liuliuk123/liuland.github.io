@@ -190,6 +190,9 @@
         </div>
     </div>
 
+    <!-- 引入API工具 -->
+    <script src="js/api.js"></script>
+    
     <script type="text/javascript">
         window.onload = function() {
             // 获取模态框元素
@@ -211,7 +214,7 @@
             }
             
             // 注册验证
-            document.getElementById('btnRegister').onclick = function() {
+            document.getElementById('btnRegister').onclick = async function() {
                 const username = document.getElementById('username');
                 const password = document.getElementById('password');
                 const captcha = document.getElementById('captcha');
@@ -247,20 +250,31 @@
                 registerBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>注册中...';
                 registerBtn.disabled = true;
                 
-                // 模拟注册过程
-                setTimeout(() => {
-                    // 显示成功弹窗
-                    successModal.classList.remove('hidden');
+                try {
+                    // 调用后端API注册
+                    const result = await api.register(username.value.trim(), password.value.trim());
+                    
+                    if (result.success) {
+                        // 显示成功弹窗
+                        successModal.classList.remove('hidden');
+                    } else {
+                        throw new Error(result.message || '注册失败');
+                    }
+                } catch (error) {
+                    alert('注册失败: ' + error.message);
+                    // 重新生成验证码
+                    createCode();
+                } finally {
                     // 重置按钮状态
                     registerBtn.innerHTML = '注册';
                     registerBtn.disabled = false;
-                }, 1000);
+                }
             }
             
             // 关闭弹窗并跳转
             closeModal.onclick = function() {
                 successModal.classList.add('hidden');
-                // 实际应用中跳转到登录页
+                // 跳转到登录页
                 window.location.href = '登录.html';
             }
             
