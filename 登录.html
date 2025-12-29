@@ -212,6 +212,9 @@
         </div>
     </div>
 
+    <!-- 引入API工具 -->
+    <script src="js/api.js"></script>
+    
     <script type="text/javascript">
         window.onload = function() {
             // 获取模态框元素
@@ -233,7 +236,7 @@
             }
             
             // 登录验证
-            document.getElementById('btnLogin').onclick = function() {
+            document.getElementById('btnLogin').onclick = async function() {
                 const username = document.getElementById('username');
                 const password = document.getElementById('password');
                 const captcha = document.getElementById('captcha');
@@ -247,7 +250,7 @@
                     return;
                 }
                 
-                // 验证密码（修复原代码中的正则引用错误）
+                // 验证密码
                 const pwdReg = new RegExp('^\\d{6}$');
                 if (!pwdReg.test(password.value.trim())) {
                     showError(password, '密码输入不正确!由6位数字组成。');
@@ -269,14 +272,25 @@
                 loginBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>登录中...';
                 loginBtn.disabled = true;
                 
-                // 模拟登录过程
-                setTimeout(() => {
-                    // 显示成功弹窗
-                    successModal.classList.remove('hidden');
+                try {
+                    // 调用后端API登录
+                    const result = await api.login(username.value.trim(), password.value.trim());
+                    
+                    if (result.success) {
+                        // 显示成功弹窗
+                        successModal.classList.remove('hidden');
+                    } else {
+                        throw new Error(result.message || '登录失败');
+                    }
+                } catch (error) {
+                    alert('登录失败: ' + error.message);
+                    // 重新生成验证码
+                    createCode();
+                } finally {
                     // 重置按钮状态
                     loginBtn.innerHTML = '登录';
                     loginBtn.disabled = false;
-                }, 1000);
+                }
             }
             
             // 关闭弹窗并跳转
