@@ -1,9 +1,9 @@
-a<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>liuliu的商城</title>
+    <title>乐购商城</title>
     <!-- CSS 样式保持不变 -->
     <style>
         /* 通用样式 */
@@ -223,6 +223,11 @@ a<!DOCTYPE html>
             padding: 8px 0;
             color: #555;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar ul li a.active {
+            color: #007bff;
+            font-weight: 500;
         }
 
         .sidebar ul li a:hover {
@@ -664,7 +669,7 @@ a<!DOCTYPE html>
             <div class="header-actions">
                 <input type="text" placeholder="搜索商品...">
                 <a href="vip.html" class="cart-icon" id="openCartBtn">🛒 购物车 (<span id="cartItemCount">0</span>)</a>
-                <a href="注册.html" class="user-actions">登录/注册</a>
+                <a href="vip.html" class="user-actions" id="userActionsBtn">登录/注册</a>
             </div>
         </div>
     </header>
@@ -691,46 +696,21 @@ a<!DOCTYPE html>
         <div class="container">
             <aside class="sidebar">
                 <h2>商品分类</h2>
-                <ul>
-                    <li><a href="#">电子产品</a></li>
-                    <li><a href="#">服装鞋帽</a></li>
-                    <li><a href="#">家居生活</a></li>
-                    <li><a href="#">图书音像</a></li>
-                    <li><a href="#">美妆个护</a></li>
+                <ul id="categoryList">
+                    <li><a href="#" class="category-link active" data-category="">全部商品</a></li>
+                    <li><a href="#" class="category-link" data-category="1">电子产品</a></li>
+                    <li><a href="#" class="category-link" data-category="2">服装鞋帽</a></li>
+                    <li><a href="#" class="category-link" data-category="3">家居生活</a></li>
+                    <li><a href="#" class="category-link" data-category="4">图书音像</a></li>
+                    <li><a href="#" class="category-link" data-category="5">美妆个护</a></li>
                 </ul>
             </aside>
 
             <section class="product-listing">
-                <h1>热门商品</h1>
-                <div class="product-grid">
-                    <div class="product-card">
-                        <!-- 替换后的商品图片1 - 电子产品 -->
-                        <img src="https://picsum.photos/id/96/200/200" alt="无线蓝牙耳机">
-                        <h3>无线蓝牙耳机</h3>
-                        <p class="price">¥ <span class="product-price">199.00</span></p>
-                        <button class="add-to-cart" data-product-id="p001" data-product-name="无线蓝牙耳机" data-product-price="199.00">加入购物车</button>
-                    </div>
-                    <div class="product-card">
-                        <!-- 替换后的商品图片2 - 服装 -->
-                        <img src="https://picsum.photos/id/21/200/200" alt="纯棉休闲T恤">
-                        <h3>纯棉休闲T恤</h3>
-                        <p class="price">¥ <span class="product-price">299.00</span></p>
-                        <button class="add-to-cart" data-product-id="p002" data-product-name="纯棉休闲T恤" data-product-price="299.00">加入购物车</button>
-                    </div>
-                    <div class="product-card">
-                        <!-- 替换后的商品图片3 - 家居用品 -->
-                        <img src="https://picsum.photos/id/42/200/200" alt="北欧风马克杯">
-                        <h3>北欧风马克杯</h3>
-                        <p class="price">¥ <span class="product-price">99.00</span></p>
-                        <button class="add-to-cart" data-product-id="p003" data-product-name="北欧风马克杯" data-product-price="99.00">加入购物车</button>
-                    </div>
-                    <div class="product-card">
-                        <!-- 替换后的商品图片4 - 美妆个护 -->
-                        <img src="https://picsum.photos/id/24/200/200" alt="保湿修护面霜">
-                        <h3>保湿修护面霜</h3>
-                        <p class="price">¥ <span class="product-price">499.00</span></p>
-                        <button class="add-to-cart" data-product-id="p004" data-product-name="保湿修护面霜" data-product-price="499.00">加入购物车</button>
-                    </div>
+                <h1 id="categoryTitle">热门商品</h1>
+                <div class="product-grid" id="productGrid">
+                    <!-- 商品将通过JavaScript动态加载 -->
+                    <p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">加载中...</p>
                 </div>
             </section>
         </div>
@@ -761,14 +741,154 @@ a<!DOCTYPE html>
                 <span>总计:</span>
                 <span id="cartTotalPrice">¥ 0.00</span>
             </div>
-            <button class="checkout-btn">去结算</button>
+            <button class="checkout-btn" id="checkoutBtn">去结算</button>
         </div>
     </div>
     <div class="cart-overlay" id="cartOverlay"></div>
 
     <!-- JavaScript 脚本保持不变 -->
+    <script src="js/api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // ===================== 商品加载和分类筛选 =====================
+            let currentCategory = '';
+            const productGrid = document.getElementById('productGrid');
+            const categoryTitle = document.getElementById('categoryTitle');
+            const categoryLinks = document.querySelectorAll('.category-link');
+            
+            // 分类名称映射
+            const categoryNames = {
+                '': '热门商品',
+                '1': '电子产品',
+                '2': '服装鞋帽',
+                '3': '家居生活',
+                '4': '图书音像',
+                '5': '美妆个护'
+            };
+            
+            // 加载商品列表
+            async function loadProducts(categoryId = '') {
+                productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">加载中...</p>';
+                currentCategory = categoryId;
+                
+                try {
+                    const params = {
+                        limit: 20,
+                        status: 'active'
+                    };
+                    
+                    if (categoryId) {
+                        params.category_id = categoryId;
+                    }
+                    
+                    const result = await api.getProducts(params);
+                    
+                    if (result.success && result.data && result.data.products && result.data.products.length > 0) {
+                        renderProducts(result.data.products);
+                    } else {
+                        productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">暂无商品</p>';
+                    }
+                } catch (error) {
+                    console.error('加载商品失败:', error);
+                    // 加载失败时显示默认商品
+                    renderDefaultProducts();
+                }
+            }
+            
+            // 渲染商品列表
+            function renderProducts(products) {
+                productGrid.innerHTML = '';
+                
+                products.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <img src="${product.image || 'https://picsum.photos/200/200'}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p class="price">¥ <span class="product-price">${product.price}</span></p>
+                        <button class="add-to-cart" 
+                                data-product-id="${product.product_id}" 
+                                data-product-name="${product.name}" 
+                                data-product-price="${product.price}"
+                                data-product-image="${product.image || 'https://picsum.photos/80/80'}">
+                            加入购物车
+                        </button>
+                    `;
+                    productGrid.appendChild(productCard);
+                    
+                    // 绑定加入购物车事件
+                    const addBtn = productCard.querySelector('.add-to-cart');
+                    addBtn.addEventListener('click', (e) => {
+                        const productId = e.target.dataset.productId;
+                        const productName = e.target.dataset.productName;
+                        const productPrice = e.target.dataset.productPrice;
+                        const productImage = e.target.dataset.productImage;
+                        addToCart(productId, productName, productPrice, productImage);
+                    });
+                });
+            }
+            
+            // 渲染默认商品（当后端无数据时）
+            function renderDefaultProducts() {
+                const defaultProducts = [
+                    { id: 'p001', name: '无线蓝牙耳机', price: 199.00, image: 'https://picsum.photos/id/96/200/200' },
+                    { id: 'p002', name: '纯棉休闲T恤', price: 299.00, image: 'https://picsum.photos/id/21/200/200' },
+                    { id: 'p003', name: '北欧风马克杯', price: 99.00, image: 'https://picsum.photos/id/42/200/200' },
+                    { id: 'p004', name: '保湿修护面霜', price: 499.00, image: 'https://picsum.photos/id/24/200/200' }
+                ];
+                
+                productGrid.innerHTML = '';
+                defaultProducts.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p class="price">¥ <span class="product-price">${product.price.toFixed(2)}</span></p>
+                        <button class="add-to-cart" 
+                                data-product-id="${product.id}" 
+                                data-product-name="${product.name}" 
+                                data-product-price="${product.price}"
+                                data-product-image="${product.image}">
+                            加入购物车
+                        </button>
+                    `;
+                    productGrid.appendChild(productCard);
+                    
+                    const addBtn = productCard.querySelector('.add-to-cart');
+                    addBtn.addEventListener('click', (e) => {
+                        const productId = e.target.dataset.productId;
+                        const productName = e.target.dataset.productName;
+                        const productPrice = e.target.dataset.productPrice;
+                        const productImage = e.target.dataset.productImage;
+                        addToCart(productId, productName, productPrice, productImage);
+                    });
+                });
+            }
+            
+            // 分类点击事件
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // 更新激活状态
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // 获取分类ID
+                    const categoryId = link.dataset.category;
+                    
+                    // 更新标题
+                    categoryTitle.textContent = categoryNames[categoryId] || '热门商品';
+                    
+                    // 加载该分类的商品
+                    loadProducts(categoryId);
+                });
+            });
+            
+            // 初始加载商品
+            loadProducts();
+            
             // --- 轮播图 JavaScript 逻辑 ---
             const carouselSlides = document.querySelector('.carousel-slides');
             const slides = document.querySelectorAll('.carousel-slides img');
@@ -854,7 +974,6 @@ a<!DOCTYPE html>
             const cartItemsContainer = document.getElementById('cartItems');
             const cartTotalPriceSpan = document.getElementById('cartTotalPrice');
             const cartItemCountSpan = document.getElementById('cartItemCount');
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
             let cart = []; // 购物车数据，存储商品对象 { id, name, price, quantity, image }
 
@@ -910,24 +1029,17 @@ a<!DOCTYPE html>
             }
 
             // 添加商品到购物车
-            function addToCart(productId, productName, productPrice) {
+            function addToCart(productId, productName, productPrice, productImage) {
                 const existingItem = cart.find(item => item.id === productId);
                 if (existingItem) {
                     existingItem.quantity++;
                 } else {
-                    // 匹配商品对应的图片
-                    const productImages = {
-                        'p001': 'https://picsum.photos/id/96/80/80',
-                        'p002': 'https://picsum.photos/id/21/80/80',
-                        'p003': 'https://picsum.photos/id/42/80/80',
-                        'p004': 'https://picsum.photos/id/24/80/80'
-                    };
                     cart.push({
                         id: productId,
                         name: productName,
                         price: parseFloat(productPrice),
                         quantity: 1,
-                        image: productImages[productId] || 'https://picsum.photos/80/80'
+                        image: productImage || 'https://picsum.photos/80/80'
                     });
                 }
                 renderCart();
@@ -973,15 +1085,6 @@ a<!DOCTYPE html>
             closeCartBtn.addEventListener('click', closeCartSidebar);
             cartOverlay.addEventListener('click', closeCartSidebar); // 点击遮罩层关闭
 
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const productId = event.target.dataset.productId;
-                    const productName = event.target.dataset.productName;
-                    const productPrice = event.target.dataset.productPrice;
-                    addToCart(productId, productName, productPrice);
-                });
-            });
-
             // 购物车商品操作事件委托（解决动态生成元素的事件绑定问题）
             cartItemsContainer.addEventListener('click', (e) => {
                 const target = e.target;
@@ -1001,7 +1104,55 @@ a<!DOCTYPE html>
                 }
             });
 
-            // 页面加载时加载购物车数据并渲染
+            // 检查用户登录状态
+            function checkUserLogin() {
+                const userToken = localStorage.getItem('user_token');
+                const userInfo = localStorage.getItem('user_info');
+                const userActionsBtn = document.getElementById('userActionsBtn');
+                
+                if (userToken && userInfo) {
+                    try {
+                        const user = JSON.parse(userInfo);
+                        userActionsBtn.textContent = `${user.username}`;
+                        userActionsBtn.href = 'vip.html';
+                    } catch (e) {
+                        console.error('解析用户信息失败:', e);
+                    }
+                } else {
+                    userActionsBtn.textContent = '登录/注册';
+                    userActionsBtn.href = '登录.html';
+                }
+            }
+
+            // 结算按钮点击事件
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', () => {
+                    if (cart.length === 0) {
+                        alert('购物车是空的，请先添加商品！');
+                        return;
+                    }
+                    
+                    // 检查用户是否登录
+                    const userToken = localStorage.getItem('user_token');
+                    if (!userToken) {
+                        alert('请先登录！');
+                        window.location.href = '登录.html';
+                        return;
+                    }
+                    
+                    // 跳转到结算页面（可以带上购物车信息）
+                    window.location.href = 'order.html';
+                });
+            }
+            
+            // 计算购物车总价
+            function calculateTotal() {
+                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            // 初始化页面
+            checkUserLogin(); // 检查用户登录状态
             loadCartFromLocalStorage();
             renderCart();
         });
